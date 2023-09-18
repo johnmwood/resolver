@@ -1,16 +1,12 @@
 package message
 
 type Message struct {
-	/*
-		- header
-		- questions
-		- answer
-		- authority
-		- additional
-	*/
+	header     Header
+	questions  []Question
+	answer     Answer
+	authority  Authority
+	additional Additional
 }
-
-type Questions struct{}
 
 type Answer struct{}
 
