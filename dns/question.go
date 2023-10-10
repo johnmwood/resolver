@@ -1,7 +1,8 @@
 package message
 
 import (
-	"fmt"
+	"bytes"
+	"encoding/binary"
 	"strings"
 )
 
@@ -26,20 +27,34 @@ import (
 //	a two octet code that specifies the class of the query.
 //	For example, the QCLASS field is IN for the Internet.
 type Question struct {
-	QName  string
-	QType  byte
-	QClass byte
+	QName  []byte
+	QType  uint16
+	QClass uint16
+}
+
+func (q Question) byteEncode() []byte {
+	buf := new(bytes.Buffer)
+
+	binary.Write(buf, binary.BigEndian, q.QName)
+	binary.Write(buf, binary.BigEndian, q.QType)
+	binary.Write(buf, binary.BigEndian, q.QClass)
+
+	return buf.Bytes()
 }
 
 // performs dns name compression
 // e.g. dns.google.com -> 3dns6google3com0
-func encodeName(hostname string) string {
-	var encodedName string
+func byteEncodeHostname(hostname string) []byte {
+	encodedName := []byte{}
 	labels := strings.Split(hostname, ".")
 
 	for _, label := range labels {
-		encodedName += fmt.Sprintf("%d%s", len(label), label)
+		encodedName = append(encodedName, byte(len(label)))
+		for _, r := range label {
+			encodedName = append(encodedName, byte(r))
+		}
 	}
+	encodedName = append(encodedName, byte(0))
 
-	return encodedName + "0"
+	return encodedName
 }

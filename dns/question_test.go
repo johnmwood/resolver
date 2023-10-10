@@ -1,20 +1,21 @@
 package message
 
 import (
+	"encoding/hex"
 	"testing"
 )
 
-func TestEncodeName(t *testing.T) {
+func TestEncodeHostnameHexValue(t *testing.T) {
 	testCases := map[string]string{
-		"dns.google.com":        "3dns6google3com0",
-		"subdomain.example.com": "9subdomain7example3com0",
-		"www.openai.org":        "3www6openai3org0",
+		"dns.google.com":        "03646e7306676f6f676c6503636f6d00",
+		"subdomain.example.com": "09737562646f6d61696e076578616d706c6503636f6d00",
+		"www.openai.org":        "03777777066f70656e6169036f726700",
 	}
 
 	for hostname, expected := range testCases {
-		res := encodeName(hostname)
+		res := hex.EncodeToString(byteEncodeHostname(hostname))
 		if res != expected {
-			t.Errorf("error encoding name. got: %s, expected: %s\n", res, expected)
+			t.Errorf("error encoding name: %s\ngot:      %s\nexpected: %s\n\n", hostname, res, expected)
 		}
 	}
 }
