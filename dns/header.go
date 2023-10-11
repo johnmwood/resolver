@@ -160,12 +160,6 @@ const (
 	Refused
 )
 
-func NewHeader() Header {
-	return Header{
-		ID: generateUniqueID(),
-	}
-}
-
 func (h Header) byteEncode() []byte {
 	buf := make([]byte, 12)
 

@@ -1,3 +1,7 @@
 package resolver
 
-type Resolver struct{}
+import "net"
+
+type Resolver struct {
+	net.Dialer
+}

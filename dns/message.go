@@ -10,6 +10,14 @@ type Message struct {
 	additional Additional
 }
 
+func NewMessage(opts ...MessageOption) Message {
+	m := Message{}
+	for _, opt := range opts {
+		opt(&m)
+	}
+	return m
+}
+
 func (m Message) byteEncode() (encoded []byte) {
 	messageEncoded := append(m.header.byteEncode())
 	for _, q := range m.questions {
