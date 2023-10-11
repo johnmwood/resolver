@@ -18,7 +18,7 @@ func NewMessage(opts ...MessageOption) Message {
 	return m
 }
 
-func (m Message) byteEncode() (encoded []byte) {
+func (m Message) ByteEncode() (encoded []byte) {
 	messageEncoded := append(m.header.byteEncode())
 	for _, q := range m.questions {
 		messageEncoded = append(messageEncoded, q.byteEncode()...)
@@ -27,7 +27,7 @@ func (m Message) byteEncode() (encoded []byte) {
 }
 
 func (m Message) hexEncodeToString() string {
-	return hex.EncodeToString(m.byteEncode())
+	return hex.EncodeToString(m.ByteEncode())
 }
 
 type Answer struct{}
